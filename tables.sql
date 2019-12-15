@@ -73,4 +73,15 @@ CREATE TABLE stage_violation (
   hydrant_violation VARCHAR,
   double_parking_violation VARCHAR
 )
+
+CREATE TABLE stage_county (
+  code VARCHAR,
+  county VARCHAR
+)
+
+CREATE TABLE stage_issuing_agency (
+  code VARCHAR,
+  agency VARCHAR
+)
+
 -- <<< Staging Tables <<< --

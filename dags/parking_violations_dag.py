@@ -44,6 +44,8 @@ stage_vehicle_colors_to_redshift = stage_table_task('s3_parking_violations_vehic
 stage_violations_to_redshift = stage_table_task('s3_parking_violations_key', 'Stage_violations', 'stage_violation', "CSV IGNOREHEADER 1 DELIMITER ';' ACCEPTANYDATE DATEFORMAT 'auto'")
 # FOR THE SAMPLE FILE (',' AND NOT ',')
 # stage_violations_to_redshift = stage_table_task('s3_parking_violations_key', 'Stage_violations', 'stage_violation', "CSV IGNOREHEADER 1 ACCEPTANYDATE DATEFORMAT 'auto'")
+stage_counties_to_redshift = stage_table_task('s3_parking_violations_counties_key', 'Stage_counties', 'stage_county')
+stage_issuing_agencies_to_redshift = stage_table_task('s3_parking_violations_issuing_agencies_key', 'Stage_issuing_agencies', 'stage_issuing_agency')
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
@@ -54,6 +56,8 @@ start_operator >> stage_vehicle_body_types_to_redshift
 start_operator >> stage_vehicle_plate_types_to_redshift
 start_operator >> stage_vehicle_colors_to_redshift
 start_operator >> stage_violations_to_redshift
+start_operator >> stage_counties_to_redshift
+start_operator >> stage_issuing_agencies_to_redshift
 
 stage_states_to_redshift                >> end_operator
 stage_violation_codes_to_redshift       >> end_operator
@@ -61,3 +65,5 @@ stage_vehicle_body_types_to_redshift    >> end_operator
 stage_vehicle_plate_types_to_redshift   >> end_operator
 stage_vehicle_colors_to_redshift        >> end_operator
 stage_violations_to_redshift            >> end_operator
+stage_counties_to_redshift              >> end_operator
+stage_issuing_agencies_to_redshift      >> end_operator
