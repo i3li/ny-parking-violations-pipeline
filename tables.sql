@@ -1,6 +1,5 @@
 -- >>> Staging Tables >>> --
 CREATE TABLE stage_state (
-  id INT IDENTITY(0,1),
   record_type VARCHAR,
   state_code VARCHAR,
   description VARCHAR
