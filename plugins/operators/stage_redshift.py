@@ -23,7 +23,7 @@ class StageToRedshiftOperator(BaseOperator):
                  table='',
                  s3_bucket='',
                  s3_key='',
-                 data_format='CSV IGNOREHEADER 1',
+                 data_format=None,
                  *args, **kwargs):
         """
         :param redshift_conn_id: The redshift connection id. The name or identifier for
@@ -48,7 +48,7 @@ class StageToRedshiftOperator(BaseOperator):
         self.table = table
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
-        self.data_format = data_format
+        self.data_format = data_format if data_format is not None else 'CSV IGNOREHEADER 1'
 
     def execute(self, context):
         # AWS Hook
