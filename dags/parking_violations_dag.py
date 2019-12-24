@@ -11,8 +11,8 @@ from helpers import SqlQueries
 s3_bucket = Variable.get('s3_violations_bucket')
 dag = DAG('parking_violations_dag',
           description='Load and transfor parking violations data in AWS Redshift with Airflow',
-          start_date=datetime(2019, 12, 11),
-          schedule_interval=None
+          start_date=datetime.now(),
+          schedule_interval='@daily'
         )
 
 def stage_table_task(s3_key, task_id, table, data_format=None):
@@ -39,9 +39,9 @@ stage_violation_codes_to_redshift = stage_table_task('s3_parking_violations_viol
 stage_vehicle_body_types_to_redshift = stage_table_task('s3_parking_violations_vehicle_body_types_key', 'Stage_vehicle_body_types', 'stage_vehicle_body_type', f"JSON 's3://{s3_bucket}/{Variable.get('s3_parking_violations_vehicle_body_types_jsonpaths_key')}'")
 stage_vehicle_plate_types_to_redshift = stage_table_task('s3_parking_violations_vehicle_plate_types_key', 'Stage_vehicle_plate_types', 'stage_vehicle_plate_type', f"JSON 's3://{s3_bucket}/{Variable.get('s3_parking_violations_vehicle_plate_types_jsonpaths_key')}'")
 stage_vehicle_colors_to_redshift = stage_table_task('s3_parking_violations_vehicle_colors_key', 'Stage_vehicle_colors', 'stage_vehicle_color', f"JSON 's3://{s3_bucket}/{Variable.get('s3_parking_violations_vehicle_colors_jsonpaths_key')}'")
-# stage_violations_to_redshift = stage_table_task('s3_parking_violations_key', 'Stage_violations', 'stage_violation', "CSV IGNOREHEADER 1 DELIMITER ';' ACCEPTANYDATE DATEFORMAT 'auto'")
+stage_violations_to_redshift = stage_table_task('s3_parking_violations_key', 'Stage_violations', 'stage_violation', "CSV IGNOREHEADER 1 DELIMITER ';' ACCEPTANYDATE DATEFORMAT 'auto'")
 # FOR THE SAMPLE FILE (',' AND NOT ';')
-stage_violations_to_redshift = stage_table_task('s3_parking_violations_key', 'Stage_violations', 'stage_violation', "CSV IGNOREHEADER 1 ACCEPTANYDATE DATEFORMAT 'auto'")
+# stage_violations_to_redshift = stage_table_task('s3_parking_violations_key', 'Stage_violations', 'stage_violation', "CSV IGNOREHEADER 1 ACCEPTANYDATE DATEFORMAT 'auto'")
 stage_counties_to_redshift = stage_table_task('s3_parking_violations_counties_key', 'Stage_counties', 'stage_county', f"JSON 's3://{s3_bucket}/{Variable.get('s3_parking_violations_counties_jsonpaths_key')}'")
 stage_issuing_agencies_to_redshift = stage_table_task('s3_parking_violations_issuing_agencies_key', 'Stage_issuing_agencies', 'stage_issuing_agency', f"JSON 's3://{s3_bucket}/{Variable.get('s3_parking_violations_issuing_agencies_jsonpaths_key')}'")
 
