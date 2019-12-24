@@ -285,3 +285,14 @@ class SqlQueries:
     @staticmethod
     def count_stmt(table_name='table'):
         return f'SELECT COUNT(*) FROM {table_name}'
+
+    @staticmethod
+    def column_non_null_percentage_stmt(table_name, column_name):
+        return f'''
+        SELECT
+	       (SELECT COUNT(*) FROM {table_name} WHERE {column_name} IS NOT NULL)
+           /
+           (SELECT COUNT(*) FROM {table_name})
+           *
+           100
+        '''
