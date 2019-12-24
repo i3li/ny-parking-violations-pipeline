@@ -11,8 +11,8 @@ from helpers import SqlQueries
 s3_bucket = Variable.get('s3_violations_bucket')
 dag = DAG('parking_violations_dag',
           description='Load and transfor parking violations data in AWS Redshift with Airflow',
-          start_date=datetime.now(),
-          schedule_interval='@daily'
+          start_date=datetime(2019, 1, 1),
+          schedule_interval='@yearly'
         )
 
 def stage_table_task(s3_key, task_id, table, data_format=None):
