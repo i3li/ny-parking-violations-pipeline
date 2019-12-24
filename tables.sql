@@ -115,68 +115,76 @@ CREATE TABLE stage_issuing_agency (
 -- <<< Staging Tables <<< --
 
 -- >>> Dimension Tables >>> --
-
 CREATE TABLE "vehicle" (
-  "id" VARCHAR,
-  "plate_id" VARCHAR,
-  "registration_state" VARCHAR,
-  "plate_type" VARCHAR,
-  "body_type" VARCHAR,
-  "maker" VARCHAR,
-  "expiration_date" DATE,
-  "color" VARCHAR,
-  "make_year" INT
+  "id" varchar PRIMARY KEY,
+  "plate_id" varchar,
+  "registration_state" varchar,
+  "plate_type" varchar,
+  "body_type" varchar,
+  "maker" varchar,
+  "expiration_date" date,
+  "color" varchar,
+  "make_year" int
 );
 
 CREATE TABLE "violation_code" (
-  "code" INT,
-  "description" VARCHAR,
-  "manhattan_amount" FLOAT,
-  "others_amount" FLOAT
+  "code" int PRIMARY KEY,
+  "description" varchar,
+  "manhattan_amount" float,
+  "others_amount" float
 );
 
 CREATE TABLE "date" (
-  "date" DATE,
-  "day" INT,
-  "month" INT,
-  "year" INT
+  "date" date PRIMARY KEY,
+  "day" int,
+  "month" int,
+  "year" int
 );
 
 CREATE TABLE "time" (
-  "time" INT, -- Number of minutes since the start of the day 00:00
-  "minutes" INT,
-  "hours" INT
+  "time" int PRIMARY KEY,
+  "minutes" int,
+  "hours" int
 );
 
 CREATE TABLE "location" (
-  "id" VARCHAR,
-  "street_code1" INT,
-  "street_code2" INT,
-  "street_code3" INT,
-  "street_name" VARCHAR,
-  "intersecting_street" VARCHAR,
-  "precinct" INT,
-  "county" VARCHAR,
-  "house_number" VARCHAR
+  "id" varchar PRIMARY KEY,
+  "street_code1" int,
+  "street_code2" int,
+  "street_code3" int,
+  "street_name" varchar,
+  "intersecting_street" varchar,
+  "precinct" int,
+  "county" varchar,
+  "house_number" varchar
 );
 
+CREATE TABLE "vehicle" (
+  "id" varchar PRIMARY KEY,
+  "plate_id" varchar,
+  "registration_state" varchar,
+  "plate_type" varchar,
+  "body_type" varchar,
+  "maker" varchar,
+  "expiration_date" date,
+  "color" varchar,
+  "make_year" int
+);
 -- <<< Dimension Tables <<< --
 
 -- >>> Fact Tables >>> --
-
 CREATE TABLE "violation" (
-  "summons_number" VARCHAR,
-  "vehicle" VARCHAR,
-  "violation_code" INT,
-  "issue_date" DATE,
-  "violation_time" INT,
-  "time_first_observed" INT,
-  "date_first_observed" DATE,
-  "location" VARCHAR,
-  "issuing_agency" VARCHAR,
-  "in_fron_or_opposite" VARCHAR,
-  "law_section" VARCHAR,
-  "sub_division" VARCHAR
+  "summons_number" varchar PRIMARY KEY,
+  "vehicle" varchar REFERENCES "vehicle" ("id"),
+  "violation_code" int REFERENCES "violation_code" ("code"),
+  "issue_date" date REFERENCES "date" ("date"),
+  "violation_time" int REFERENCES "time" ("time"),
+  "time_first_observed" int REFERENCES "time" ("time"),
+  "date_first_observed" date REFERENCES "date" ("date"),
+  "location" varchar REFERENCES "location" ("id"),
+  "issuing_agency" varchar,
+  "in_fron_or_opposite" varchar,
+  "law_section" varchar,
+  "sub_division" varchar
 );
-
 -- <<< Fact Tables <<< --

@@ -49,49 +49,49 @@ stage2_violations_to_redshift = LoadTableOperator(
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 
-# load_violation_code = LoadTableOperator(
-#     task_id='Load_violation_code',
-#     table='violation_code',
-#     select_sql_stmt=SqlQueries.violation_code_table,
-#     dag=dag
-# )
-#
-# load_date = LoadTableOperator(
-#     task_id='Load_date',
-#     table='date',
-#     select_sql_stmt=SqlQueries.date_table,
-#     dag=dag
-# )
-#
-# load_time = LoadTableOperator(
-#     task_id='Load_time',
-#     table='time',
-#     select_sql_stmt=SqlQueries.time_table,
-#     dag=dag
-# )
-#
-# load_location = LoadTableOperator(
-#     task_id='Load_location',
-#     table='location',
-#     columns='street_code1, street_code2, street_code3, street_name, intersecting_street, precinct, county, house_number',
-#     select_sql_stmt=SqlQueries.location_table,
-#     dag=dag
-# )
-#
-# load_issuer = LoadTableOperator(
-#     task_id='Load_issuer',
-#     table='issuer',
-#     select_sql_stmt=SqlQueries.issuer_table,
-#     dag=dag
-# )
-#
-# load_vehicle = LoadTableOperator(
-#     task_id='Load_vehicle',
-#     table='vehicle',
-#     select_sql_stmt=SqlQueries.vehicle_table,
-#     dag=dag
-# )
-#
+load_violation_code = LoadTableOperator(
+    task_id='Load_violation_code',
+    table='violation_code',
+    select_sql_stmt=SqlQueries.violation_code_table,
+    dag=dag
+)
+
+load_date = LoadTableOperator(
+    task_id='Load_date',
+    table='date',
+    select_sql_stmt=SqlQueries.date_table,
+    dag=dag
+)
+
+load_time = LoadTableOperator(
+    task_id='Load_time',
+    table='time',
+    select_sql_stmt=SqlQueries.time_table,
+    dag=dag
+)
+
+load_location = LoadTableOperator(
+    task_id='Load_location',
+    table='location',
+    columns='street_code1, street_code2, street_code3, street_name, intersecting_street, precinct, county, house_number',
+    select_sql_stmt=SqlQueries.location_table,
+    dag=dag
+)
+
+
+load_vehicle = LoadTableOperator(
+    task_id='Load_vehicle',
+    table='vehicle',
+    select_sql_stmt=SqlQueries.vehicle_table,
+    dag=dag
+)
+
+load_violation = LoadTableOperator(
+    task_id='Load_violation',
+    table='violation',
+    select_sql_stmt=SqlQueries.violation_table,
+    dag=dag
+)
 # has_rows_checker = lambda records: len(records) == 1 and len(records[0]) == 1 and records[0][0] > 0
 # dimension_check = DataQualityOperator(
 #     task_id='Check_dimensions',
@@ -115,22 +115,23 @@ end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
 # Define dependencies
 
 stage_operators = [
-    # stage_states_to_redshift, stage_violation_codes_to_redshift,
-    # stage_vehicle_body_types_to_redshift, stage_vehicle_plate_types_to_redshift,
-    # stage_vehicle_colors_to_redshift, stage_counties_to_redshift,
-    # stage_issuing_agencies_to_redshift, stage_violations_to_redshift
+    stage_states_to_redshift, stage_violation_codes_to_redshift,
+    stage_vehicle_body_types_to_redshift, stage_vehicle_plate_types_to_redshift,
+    stage_vehicle_colors_to_redshift, stage_counties_to_redshift,
+    stage_issuing_agencies_to_redshift, stage_violations_to_redshift
 ]
 
 fact_operators = [
-#     DummyOperator(task_id='Load_violation', dag=dag)
+    load_violation
 ]
 
 dimension_operators = [
-# load_violation_code, load_date,
-# load_time, load_location,
-# load_issuer, load_vehicle
+    load_violation_code, load_date,
+    load_time, load_location,
+    load_vehicle
 ]
 
-# start_operator >> stage_operators >> stage2_violations_to_redshift >> fact_operators + dimension_operators >> end_operator
+# start_operator >> stagestage2_violations_to_redshift >> dimension_operators + fact_operators >> end_operator
+start_operator >> stage_operators >> stage2_violations_to_redshift >> fact_operators + dimension_operators >> end_operator
 # start_operator >> stage_operators >> stage2_violations_to_redshift >> end_operator
-start_operator >> stage2_violations_to_redshift >> end_operator
+# start_operator >> stage_operators >> stage2_violations_to_redshift >> end_operator
