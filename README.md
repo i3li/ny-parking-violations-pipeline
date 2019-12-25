@@ -65,7 +65,7 @@ The modeling uses the start schema model. There is only one fact table, **violat
 
 It will allow us to store information related to date (e.g., holidays) in the date dimension. If we use one dimension we would need to store date information on all records with the same date. Also, using one dimension for both date and time may lead to a huge dimension.  Finally, according to this article in Wikipedia ([Dimension (data warehouse) - Wikipedia](https://en.wikipedia.org/wiki/Dimension_(data_warehouse)#Common_patterns)), it is a common pattren to do so.
 
-![ER](/Users/ali/Documents/Udacity/Data%20Engineering/Projects/Capstone/ERD.png)
+![ER](ERD.png)
 
 # Data Pipeline
 
@@ -79,7 +79,7 @@ First, we extract the data from S3 and load it into the staging tables. Then, we
 
 The dag can be divided in three main layers. First staging layer, second staging layer, and fact and dimension loading layer.
 
-### ![](/Users/ali/Documents/Udacity/Data%20Engineering/Projects/Capstone/ny-parking-violations-pipeline/DAG.png)
+### ![](DAG.png)
 
 ### First Staging Layer
 
