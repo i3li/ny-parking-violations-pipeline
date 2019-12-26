@@ -1,6 +1,6 @@
 # Purpose
 
-Building a data warehouse and data pipelines for analyzing annual parking violations in New York. For example, the result can be simply used to answer the following questions. Which time of the (year, day) gets the most number of violations? Which type of vehicle gets the most number of parking violations? Which place has the most parking violations?
+Building a data warehouse and data pipelines for analyzing annual parking violations in New York. For example, the result can be simply used to answer the following questions: Which time of the (year, day) gets the most number of violations? Which type of vehicle gets the most number of parking violations? Which place has the most parking violations?
 
 # Datasets
 
